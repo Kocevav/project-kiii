@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-spring-boot-app
+  namespace: my-spring-boot-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-spring-boot-app
+  template:
+    metadata:
+      labels:
+        app: my-spring-boot-app
+    spec:
+      containers:
+      - name: my-spring-boot-app
+        image: koceva2002/my-dockerhub-repo:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_HIKARI_CONNECTIONTIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SPRING_DATASOURCE_HIKARI_CONNECTIONTIMEOUT
+        - name: SPRING_DATASOURCE_HIKARI_MAXIMUMPOOLSIZE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SPRING_DATASOURCE_HIKARI_MAXIMUMPOOLSIZE
+        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+        - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+        - name: SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_LOB_NON_CONTEXTUAL_CREATION
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_LOB_NON_CONTEXTUAL_CREATION
+        - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        - name: SPRING_JPA_SHOW_SQL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: SPRING_JPA_SHOW_SQL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: SPRING_DATASOURCE_PASSWORD
+
