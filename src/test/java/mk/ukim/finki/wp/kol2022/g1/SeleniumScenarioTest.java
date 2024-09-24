@@ -417,7 +417,8 @@ public class SeleniumScenarioTest {
 
         @Override
         public void describeTo(Description description) {
-        }
+        } 
+        
     }
 }
 
